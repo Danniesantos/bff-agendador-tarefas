@@ -88,7 +88,7 @@ public class TarefasController {
 
     @PutMapping
     @Operation(summary = "Altera dados das tarefas", description = "Altera dados das tarefas cadastradas")
-    @ApiResponse(responseCode = "200", description = "Tarefas altearadas")
+    @ApiResponse(responseCode = "200", description = "Tarefas alteradas")
     @ApiResponse(responseCode = "500", description = "Erro de servidor")
     @ApiResponse(responseCode = "403", description = "Tarefa id não encontrada")
     @ApiResponse(responseCode = "401", description = "Usuário não autorizado")

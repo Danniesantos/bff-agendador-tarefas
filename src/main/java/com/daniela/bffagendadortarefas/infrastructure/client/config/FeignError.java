@@ -10,24 +10,27 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class FeignError implements ErrorDecoder {
-
+    private static final String ERROR_PREFIX = "Erro: ";
 
     @Override
     public Exception decode(String s, Response response) {
 
         String mensagemErro = mensagemErro(response);
 
+
         switch (response.status()) {
             case 409:
-                return new ConflictException("Erro: " + mensagemErro);
-            case 403:
-                return new ResourceNotFoundException("Erro: " + mensagemErro);
+                return new ConflictException(ERROR_PREFIX + mensagemErro);
+            case 404:
+                return new ResourceNotFoundException(ERROR_PREFIX + mensagemErro);
             case 401:
-                return new UnauthorizedException("Erro: " + mensagemErro);
+                return new UnauthorizedException(ERROR_PREFIX + mensagemErro);
             case 400:
-                return new IllegalArgumentException("Erro: " + mensagemErro);
+                return new IllegalArgumentException(ERROR_PREFIX + mensagemErro);
+            case 502:
+                return new CommunicationException(ERROR_PREFIX + mensagemErro);
             default:
-                return new BusinessException("Erro: " + mensagemErro);
+                return new BusinessException(ERROR_PREFIX + mensagemErro);
         }
     }
 
@@ -38,7 +41,9 @@ public class FeignError implements ErrorDecoder {
             }
             return new String(response.body().asInputStream().readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new CommunicationException("Erro de comunicação com o servidor", e);
         }
     }
+
+
 }
