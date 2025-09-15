@@ -1,9 +1,7 @@
 package com.daniela.bffagendadortarefas.controller;
 
-import com.daniela.bffagendadortarefas.infrastructure.exceptions.ConflictException;
+import com.daniela.bffagendadortarefas.infrastructure.exceptions.*;
 import com.daniela.bffagendadortarefas.infrastructure.exceptions.IllegalArgumentException;
-import com.daniela.bffagendadortarefas.infrastructure.exceptions.ResourceNotFoundException;
-import com.daniela.bffagendadortarefas.infrastructure.exceptions.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,6 +28,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIIlegalArgumentException(IllegalArgumentException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CommunicationException.class)
+    public ResponseEntity<String> handleCommunicationExceptionException(CommunicationException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_GATEWAY);
     }
 
 }
